@@ -1,7 +1,7 @@
 let carrito = [];
 if (localStorage.getItem("carrito") != null) {
   let itemsCarrito = JSON.parse(localStorage.getItem("carrito"));
-  carrito = itemsCarrito;
+  carrito = itemsCarrito; 
 }
 
 class Repuesto{
@@ -49,18 +49,17 @@ for (let i=0; i<listaRepuestos.length; i++){
     </div>
     `;
 }
-document.getElementById("productos").innerHTML = items;
+$("#productos").html(items);
 
 function agregarAlCarrito(producto){
   carrito.push(producto);
   localStorage.setItem("carrito", JSON.stringify(carrito));
-  console.log(carrito);
-  
+
   let itemsCarrito = ``;
   for (let i=0; i<carrito.length; i++){
   itemsCarrito += `
     <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card h-100">
+        <div class="card h-100" id="item">
             <img class="card-img-top" src="${carrito[i].imagen}" alt="">
             <div class="card-body d-flex" style="align-items:flex-end">
                 <div>
@@ -76,13 +75,14 @@ function agregarAlCarrito(producto){
     </div>
     `;
   }
-  document.getElementById("carrito").innerHTML = itemsCarrito;
+  $("#carrito").html(itemsCarrito);
+
   /*
   let items = 0;  
   for (let i=0; i<carrito.length; i++){
     items += carrito[i].precio;
   } 
-  document.getElementById("carrito").innerHTML = "El precio total es $ " + items;
+  document.getElementById("total").innerHTML = "El precio total es $ " + items;
   */
 }
 
@@ -94,6 +94,6 @@ function borrarUnProducto(){
     }
   }
   localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
-  carrito = nuevoCarrito;  
-
+  carrito = nuevoCarrito;
+  $('#item').remove();
 }

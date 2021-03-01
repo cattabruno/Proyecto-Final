@@ -1,53 +1,67 @@
-function ShoppingCart() {
-    let cart = [];
+function MyShopCart() {
+    this.compras = []
     
-    this.addProduct = function(event) {
-        const addtocart = arrayForSearchTipoJSON.find(product => product.id == event.target.dataset.id);
-        cart.push(addtocart);
-        console.log(addtocart);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        console.log(localStorage);
-        let items = ``;
-        for (let i=0; i<cart.length; i++){ 
-        items += `
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-                <img class="card-img-top" src="${cart[i].imagen}" alt="">
-                <div class="card-body d-flex" style="align-items:flex-end">
-                <div>
-                    <h4 class="card-title">${cart[i].nombre}</h4>
-                    <h5>$${cart[i].precio}</h5>
-                    <p class="card-text">${cart[i].descripcion}</p>
-                </div>
-                </div>
-                <div class="card-footer">
-                <button class="btn btn-primary" style="width:100%" data-id=${cart[i].id} onclick="">Quitar</button>
-                </div>
-            </div>
-        </div>
-        `;
+    this.addItem = function (compra) {
+        this.compras.push(compra);
+    }
+
+    this.totalShop = function () {
+        let sumaTotal = 0;
+        for (let i = 0; i < this.compras.length; i++) {
+            let compra = this.compras[i];
+            sumaTotal += compra.producto.precio * compra.cantidad;
         }
-        $("#cart").html(items);
-        
-    }
-   
-
-    /*
-    this.getTotal = function() {
-        TOTAL = 0;
-        cart.forEach(product => {
-            TOTAL += product.price
-        })
-        return TOTAL;
-    }
-    */
-   
-    this.loadStorage = function() {
-        cart = JSON.parse(localStorage.getItem('cart'));
-        
+        return sumaTotal;
     }
 
+    this.inicializarCart = function(){
+        if (localStorage.getItem("carrito") != null) {
+            let storage = JSON.parse(localStorage.getItem("carrito"));
+            this.compras = storage; 
+            actualizarTablaCompra();
+        }
+    }
     
+    this.totalQuantity = function () {
+        let sumaCantidad = 0;
+        for (let i = 0; i < this.compras.length; i++) {
+            let compra = this.compras[i];
+            sumaCantidad += compra.cantidad;
+        }
+        return sumaCantidad;
+    }
+
+    this.eraseCartShop = function () {
+        while (this.compras.length > 0) {
+            this.compras.pop();
+        }
+        localStorage.clear();
+    }
+
+    this.comprar = function (id, cantidad = 1) {
+        let found = false;
+        for (let compra of this.compras) {
+            if (compra.producto.id == id) {
+                compra.cantidad += cantidad;
+                found = true;
+                break;
+            }
+            actualizarTablaCompra();
+        }
+        if (!found) {
+            const product = buscarProducto(id);
+            cart.addItem(new Compra(product, 1));
+            cart.totalShop();
+            cart.totalQuantity();
+            localStorage.setItem("carrito", JSON.stringify(this.compras));
+            actualizarTablaCompra();
+        }
+    }
 }
 
-let myShoppingCart = new ShoppingCart();
+var cart = new MyShopCart();
+
+function Compra(producto, cantidad) {
+    this.producto = producto;
+    this.cantidad = cantidad;
+}

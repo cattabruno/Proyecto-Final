@@ -1,4 +1,4 @@
-function MyShopCart() {
+function ShopCart() {
     this.compras = []
     
     this.addItem = function (compra) {
@@ -15,11 +15,10 @@ function MyShopCart() {
     }
 
     this.inicializarCart = function(){
-        if (localStorage.getItem("carrito") != null) {
-            let storage = JSON.parse(localStorage.getItem("carrito"));
-            this.compras = storage; 
+        if(localStorage.getItem("recuperarCompra") != null) {
+            cart.compras = JSON.parse(localStorage.getItem("recuperarCompra"));
             actualizarTablaCompra();
-        }
+        }  
     }
     
     this.totalQuantity = function () {
@@ -46,20 +45,19 @@ function MyShopCart() {
                 found = true;
                 break;
             }
-            actualizarTablaCompra();
         }
         if (!found) {
             const product = buscarProducto(id);
             cart.addItem(new Compra(product, 1));
             cart.totalShop();
             cart.totalQuantity();
-            localStorage.setItem("carrito", JSON.stringify(this.compras));
-            actualizarTablaCompra();
+            localStorage.setItem("recuperarCompra", JSON.stringify(this.compras));
         }
+        actualizarTablaCompra();
     }
 }
 
-var cart = new MyShopCart();
+let cart = new ShopCart();
 
 function Compra(producto, cantidad) {
     this.producto = producto;

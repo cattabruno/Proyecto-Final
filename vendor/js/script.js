@@ -3,9 +3,8 @@ let productList = document.getElementById('product-list');
 let carritoList = document.getElementById('product-cart');
 let totalShopFooter = document.getElementById('total-shop');
 let borrarCompra = document.getElementById('erase');
-let adquirirCompra = document.getElementById('shop')
+let $resultado = document.getElementById('resultado');
 let erase = $("#erase").click(eraseTabla);
-const $resultado = $("#resultado").html();
 
 function showProduct(listaDeProductos, list) {
     listaDeProductos.forEach(producto => {
@@ -149,9 +148,8 @@ function init(){
 init();
 
 fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales")
-        .then(respuesta => respuesta.json())
-        .then(respuestaDecodificada => {
-            console.log(respuestaDecodificada);
-            const precioDolarHoy = respuestaDecodificada.venta;
-            $resultado.textContent = precioDolarHoy;
-        });
+    .then(respuesta => respuesta.json())
+    .then(respuestaDecodificada => {
+        const precioDolarHoy = respuestaDecodificada[0].casa.venta;
+        $resultado.textContent = precioDolarHoy;
+    });

@@ -5,6 +5,7 @@ let totalShopFooter = document.getElementById('total-shop');
 let borrarCompra = document.getElementById('erase');
 let $resultado = document.getElementById('resultado');
 let erase = $("#erase").click(eraseTabla);
+cart.inicializarCart();
 
 function showProduct(listaDeProductos, list) {
     listaDeProductos.forEach(producto => {

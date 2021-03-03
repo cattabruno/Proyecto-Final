@@ -14,13 +14,6 @@ function ShopCart() {
         return sumaTotal;
     }
 
-    this.inicializarCart = function(){
-        if(localStorage.getItem("recuperarCompra") != null) {
-            cart.compras = JSON.parse(localStorage.getItem("recuperarCompra"));
-            actualizarTablaCompra();
-        }  
-    }
-    
     this.totalQuantity = function () {
         let sumaCantidad = 0;
         for (let i = 0; i < this.compras.length; i++) {
@@ -28,6 +21,13 @@ function ShopCart() {
             sumaCantidad += compra.cantidad;
         }
         return sumaCantidad;
+    }
+
+    this.inicializarCart = function(){
+        if(localStorage.getItem("recuperarCompra") != null) {
+            cart.compras = JSON.parse(localStorage.getItem("recuperarCompra"));
+            actualizarTablaCompra();
+        }  
     }
 
     this.eraseCartShop = function () {

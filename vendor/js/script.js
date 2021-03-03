@@ -35,6 +35,12 @@ function buildProductoCard(producto) {
     return div;
 }
 
+$("button").click(function(){
+    $("#animacion").animate({
+        right: '400px'
+    });
+});  
+
 function buscarProducto(id) {
     for (let product of allProducts) {
         if (product.id == id)

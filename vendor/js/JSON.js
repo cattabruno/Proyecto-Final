@@ -1,3 +1,4 @@
+//Archivo JSON con lista de repuestos
 let listaDeProductos = [{
     "id" : 1,
     "nombre": '0584009810',

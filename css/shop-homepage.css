@@ -1,3 +1,19 @@
 body {
   padding-top: 56px;
+  background-image: url("../img/engine-piston-cross-section.jpg");
+  background-size: cover;
+}
+
+h1 {
+  color: white;
+}
+
+.cambio {
+  color: white;
+}
+
+.footer2 {
+position: fixed;
+bottom: 0;
+width: 100%;
 }

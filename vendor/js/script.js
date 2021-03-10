@@ -1,21 +1,24 @@
-//let productList = $('#product-list');
-let productsList = document.getElementById('product-list');
-
+//Inicializacion 
+let productList = $('#product-list');
 let carritoList = $('#product-cart');
 let totalShopFooter = $('#total-shop');
 let borrarCompra = $('#erase');
-let $resultado = $('#resultado');
 let erase = $("#erase").click(eraseTabla);
+let finalizarCompra = $("#fin").click(eraseTabla);
 cart.inicializarCart();
+showProduct(listaDeProductos);
 
+//Muestra los productos
 function showProduct(listaDeProductos) {
-    productsList.innerHTML = '';
-    listaDeProductos.foreach(producto => {
+    productsList = '';
+    listaDeProductos.forEach(producto => {
         const card = buildProductoCard(producto);
-        productsList.innerHTML += card;
+        productsList += card;
+        $('#product-list').html(productsList)
     });
 }
 
+//Constructor de productos
 function buildProductoCard(producto) {
     let div = `
     <div class="col-lg-4 col-md-6 mb-4">
@@ -37,20 +40,23 @@ function buildProductoCard(producto) {
     return div;
 }
 
+//Animacion de boton carrito
 $("button").click(function(){
     $("#animacion").animate({
         right: '400px'
     });
 });  
 
+//Busca Producto por id del archivo JSON
 function buscarProducto(id) {
-    for (let product of allProducts) {
+    for (let product of listaDeProductos) {
         if (product.id == id)
-            return product
+        return product
     }
     return null;
 }
 
+//Actualiza modal del carrito con productos agregados
 function actualizarTablaCompra() {
     let linea1 = '';
     let linea2 = '';
@@ -70,20 +76,17 @@ function actualizarTablaCompra() {
             <td></td>
             <td></td>
             <td>USD ${cart.totalShop()}</td>
-            <td>Cantidad de items ${cart.totalQuantity()}</td>
+            <td>Cantidad de items ${cart.totalQuantity()} un</td>
         </tr>`
     }
-    
     $('#product-cart').html(linea1);
-    
     $('#total-shop').html(linea2);
 }
 
+//Vacia el carrito
 function eraseTabla() {
     cart.eraseCartShop();
-    
     $('#product-cart').html('');
-    
     $('#total-shop').html(
     `<tr>
         <th scope="row">N/A</th>
@@ -93,9 +96,10 @@ function eraseTabla() {
     </tr>`);
 }
 
+//Ajax de valor de moneda dolar 
 fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales")
     .then(respuesta => respuesta.json())
     .then(respuestaDecodificada => {
         const precioDolarHoy = respuestaDecodificada[0].casa.venta;
-        $resultado.textContent = precioDolarHoy;
+        $('#resultado').text(precioDolarHoy); 
     });

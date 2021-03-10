@@ -1,16 +1,18 @@
-let allProducts = [];
-let productList = document.getElementById('product-list');
-let carritoList = document.getElementById('product-cart');
-let totalShopFooter = document.getElementById('total-shop');
-let borrarCompra = document.getElementById('erase');
-let $resultado = document.getElementById('resultado');
+//let productList = $('#product-list');
+let productsList = document.getElementById('product-list');
+
+let carritoList = $('#product-cart');
+let totalShopFooter = $('#total-shop');
+let borrarCompra = $('#erase');
+let $resultado = $('#resultado');
 let erase = $("#erase").click(eraseTabla);
 cart.inicializarCart();
 
-function showProduct(listaDeProductos, list) {
-    listaDeProductos.forEach(producto => {
+function showProduct(listaDeProductos) {
+    productsList.innerHTML = '';
+    listaDeProductos.foreach(producto => {
         const card = buildProductoCard(producto);
-        list.innerHTML += card;
+        productsList.innerHTML += card;
     });
 }
 
@@ -59,7 +61,7 @@ function actualizarTablaCompra() {
             <th scope="row">${compra.producto.nombre}</th>
             <td>${compra.producto.descripcion}</td>
             <td>USD ${compra.producto.precio}</td>
-            <td>${compra.cantidad}</td>
+            <td>${compra.cantidad} un</td>
         </tr>`
 
         linea2 = 
@@ -68,91 +70,28 @@ function actualizarTablaCompra() {
             <td></td>
             <td></td>
             <td>USD ${cart.totalShop()}</td>
-            <td>${cart.totalQuantity()}</td>
+            <td>Cantidad de items ${cart.totalQuantity()}</td>
         </tr>`
     }
-    carritoList.innerHTML = linea1;
-    totalShopFooter.innerHTML = linea2;
+    
+    $('#product-cart').html(linea1);
+    
+    $('#total-shop').html(linea2);
 }
 
 function eraseTabla() {
     cart.eraseCartShop();
-    carritoList.innerHTML = '';
-    totalShopFooter.innerHTML = 
+    
+    $('#product-cart').html('');
+    
+    $('#total-shop').html(
     `<tr>
         <th scope="row">N/A</th>
         <td>N/A</td>
         <td>USD 0</td>
         <td> 0 </td>
-    </tr>`
+    </tr>`);
 }
-
-function getData(callback) {
-    setTimeout(function () {
-        const json = 
-        `{"list":
-            [
-            {
-            "id":1,
-            "nombre":"0584009810",
-            "precio":50,
-            "imagen":"./img/0584009810.jpg",
-            "descripcion":"Contactor electrónico 48v"     
-            },
-            {
-            "id":2,
-            "nombre":"MD343563",
-            "precio":15,
-            "imagen":"./img/60011961 SEAL,OIL-CRANKCASE MD343563.jpg",
-            "descripcion":"Reten transmision automatica 2.5T"   
-            },
-            {
-            "id":3,
-            "nombre":"MD972457",
-            "precio":75,
-            "imagen":"./img/60014172 WATER PUMP KIT MD972457 (HELMAR) (S).jpg",
-            "descripcion":"Bomba de agua motor diesel 2.5T"  
-            },
-            {
-            "id":4,
-            "nombre":"RL485305",
-            "precio":25,
-            "imagen":"./img/60038110 SENSOR,STEER STOP RL485305.jpg",
-            "descripcion":"Sensor de proximidad"   
-            },
-            {
-            "id":5,
-            "nombre":"RL483133",
-            "precio":45,
-            "imagen":"./img/60038555 WIRE SET RL483133.jpg",
-            "descripcion":"Cableadro electrónico manillar"    
-            },
-            {
-            "id":6,
-            "nombre":"91B2402600",
-            "precio":30,
-            "imagen":"./img/91B2402600.jpg",
-            "descripcion":"Engranaje de bomba 2.5T"    
-            }
-            ]             
-            }`;
-        callback(json);
-    }, 2000)
-}
-
-function procesarData(json){
-    const data = JSON.parse(json);
-    for(let list of data.list){
-        allProducts.push(list);
-    }
-    showProduct(data.list, productList);
-}
-
-function init(){
-    getData(procesarData);
-}
-
-init();
 
 fetch("https://www.dolarsi.com/api/api.php?type=valoresprincipales")
     .then(respuesta => respuesta.json())
